@@ -39,10 +39,10 @@ flowchart TD
    - What's left to build in bullet points
    - Current work focus
    - Active decisions and considerations
-   - Important patterns and preferences
    - Learnings and project insights
    - Known issues
    - Evolution of project decisions
+   - I don't want to keep any Key business Constraints and notes here.
 
 ### Additional Context
 Create additional files/folders within .ai/ when they help organize:
