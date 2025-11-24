@@ -24,8 +24,6 @@ Uwagi: prosta tożsamość użytkownika do skopowania danych domenowych per `use
 - **UNIQUE** (`user_id`, `canonical_text`) — blokada duplikatów kanonicznych per użytkownik (US-024) 
 - **FK** (`user_id`) → `users(id)` **DEFERRABLE INITIALLY IMMEDIATE**
 
-Uwagi: status „wolne/zużyte” prezentowany z wyliczenia (patrz widok poniżej), bez kolumny flagi.
-
 ---
 
 ### `cards`
