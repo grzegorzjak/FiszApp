@@ -78,18 +78,6 @@ jedynie aktualny stan i termin.
 
 ---
 
-### Widoki pomocnicze
-
-#### `word_usage_view`
-- Kolumny:  
-  `user_id`, `word_id`, `is_used` (BOOLEAN wyliczany), `card_id` (NULL jeśli brak użycia)
-- Definicja (idea): `SELECT w.user_id, w.id AS word_id, (cw.word_id IS NOT NULL) AS is_used, cw.card_id FROM words 
-- w LEFT JOIN card_words cw ON cw.user_id = w.user_id AND cw.word_id = w.id;`
-
-Cel: prezentacja statusu „wolne/zużyte” bez dublowania stanu w danych. 
-
----
-
 ## 2) Relacje między tabelami
 
 - `users (1) —— (∞) words` przez `words.user_id`.   
@@ -149,6 +137,5 @@ Uwagi: prosta separacja tenantowa (per użytkownik), zgodna z decyzjami z sesji.
 - **Kasowanie kaskadowe**: `cards → card_words` oraz `cards → srs_state` to **ON DELETE CASCADE**; inne połączenia restrykcyjne. 
 - **Czas**: `TIMESTAMP` bez strefy; przyjmujemy UTC i konwersje po stronie aplikacji. 
 - **Statystyki/KPI** (acceptance_rate, dzienne metryki) — w MVP liczone zapytaniami/warstwą aplikacyjną; odłożenie dedykowanych tabel na później. 
-- **Zgodność techniczna**: PostgreSQL jako docelowa baza danych w stacku (mikr.us); integracja przez Spring Data JPA i wzorce repozytoriów/serwisów.
 
 ---

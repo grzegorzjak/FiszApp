@@ -51,6 +51,7 @@ FiszApp/
 - JPA: use projections/entity graphs; optimistic locking where contention appears.
 - Transactions only at service layer; keep short.
 - User‑scoped queries by `userId` everywhere.
+- Don't create comments like. "/**" in code – use self-explanatory names and clean structure.
 
 ### Key Design Patterns
 
