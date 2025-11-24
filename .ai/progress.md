@@ -7,33 +7,33 @@
 - ✅ Java 21 configured
 - ✅ Basic REST controller (HomeController) with "/" endpoint returning welcome message
 - ✅ Gradle build system configured
+- ✅ Spring Data JPA dependency added
+- ✅ PostgreSQL driver added
+- ✅ Lombok dependency added
+- ✅ Bean Validation dependency added
+- ✅ PostgreSQL database running in Docker (fiszapp-postgres container)
+- ✅ Database connection configured (localhost:5432/fiszapp)
+- ✅ JPA entities created (User, Word, Card, CardWord, SrsState)
 
 ### What's NOT Implemented Yet
 
 #### Infrastructure & Configuration
-- [ ] PostgreSQL database setup and configuration
-- [ ] Flyway migrations for database schema
-- [ ] Application properties (dev, prod profiles)
-- [ ] Docker configuration
+- [ ] Application properties profiles (dev, prod)
 - [ ] CI/CD pipeline (GitHub Actions)
 
 #### Core Dependencies Missing
-- [ ] Spring Data JPA
 - [ ] Spring Security
 - [ ] Spring Mail (for email verification/reset)
 - [ ] JWT authentication library
-- [ ] Lombok
-- [ ] PostgreSQL driver
-- [ ] Flyway
-- [ ] OpenAI API client (or RestTemplate configuration)
-- [ ] Bean Validation
+- [ ] OpenRouter (or RestTemplate configuration)
 - [ ] Thymeleaf (for server-side templates)
 
 #### Domain Model (Entities)
-- [ ] User entity
-- [ ] Word entity (with canonical form)
-- [ ] Card entity (flashcard)
-- [ ] SRSData entity (SM-2 algorithm state)
+- [x] User entity
+- [x] Word entity (with canonical form)
+- [x] Card entity (flashcard)
+- [x] SrsState entity (SM-2 algorithm state)
+- [x] CardWord entity (M:N relationship)
 - [ ] UserSession/Token management
 
 #### Core Features
@@ -71,16 +71,14 @@
 - [ ] Test database configuration
 
 ## Current Focus
-**Initial setup phase** - Project has minimal Spring Boot skeleton only. Next steps involve setting up core infrastructure.
+**Database layer setup complete** - JPA entities created and PostgreSQL connected. Next: implement repositories and basic services.
 
 ## Next Immediate Steps
-1. Add required dependencies to build.gradle
-2. Create database schema design
-3. Set up PostgreSQL connection
-4. Configure Flyway migrations
-5. Create domain entities
-6. Implement repository layer
-7. Set up Spring Security with JWT
+1. Create repository interfaces (UserRepository, WordRepository, CardRepository, etc.)
+2. Implement basic service layer
+3. Set up Spring Security with JWT
+4. Create basic REST endpoints for CRUD operations
+5. Add email functionality (Spring Mail)
 
 ## Known Issues
 None yet - project in initial setup phase.

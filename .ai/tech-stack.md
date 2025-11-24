@@ -1,8 +1,9 @@
 ## Used Technologies
 Frontend:  HTMX + Alpine.js + Tailwind CSS
 Backend:   Java 21 + Spring Boot 3.5.7
+Security: Spring Security + JWT
 Database:  PostgreSQL (mikr.us managed)
-AI:        OpenAI API (bezpośrednie wywołania przez RestTemplate)
+AI:        OpenRouter (bezpośrednie wywołania przez RestTemplate)
 Email:     Spring Mail + SMTP (np. Gmail SMTP lub SendGrid free tier)
 Hosting:   mikr.us (darmowy tier dla start)
 CI/CD:     GitHub Actions → Docker → mikr.us
@@ -11,44 +12,38 @@ CI/CD:     GitHub Actions → Docker → mikr.us
 ```
 FiszApp/
 ├── .ai/                          # AI-related documentation
-│   ├── prd.md                    # Product Requirements Document
-│   └── tech-stack.md             # Technical stack overview
-├── memory-bank/                  # Cline's Memory Bank
-│   ├── projectbrief.md          # Project foundation
-│   ├── productContext.md        # Product context
-│   ├── systemPatterns.md        # Architecture patterns
-│   ├── techContext.md           # Technical details (this file)
-│   ├── activeContext.md         # Current work context
-│   └── progress.md              # Development progress
+│   ├── db-plan.md               # Database schema design
+│   ├── prd.md                   # Product Requirements Document
+│   ├── progress.md              # Development progress
+│   └── tech-stack.md            # Technical stack overview
 ├── src/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/example/fiszapp/
 │   │   │       ├── FiszAppApplication.java
-│   │   │       ├── controller/
-│   │   │       ├── service/        # To be created
-│   │   │       ├── repository/     # To be created
-│   │   │       ├── entity/         # To be created
-│   │   │       ├── dto/            # To be created
-│   │   │       ├── config/         # To be created
-│   │   │       └── security/       # To be created
+│   │   │       ├── controller/  # REST controllers
+│   │   │       ├── entity/      # JPA entities (User, Word, Card, CardWord, SrsState)
+│   │   │       ├── service/     # To be created
+│   │   │       ├── repository/  # To be created
+│   │   │       ├── dto/         # To be created
+│   │   │       ├── config/      # To be created
+│   │   │       └── security/    # To be created
 │   │   └── resources/
-│   │       ├── application.properties
-│   │       ├── application-dev.properties    # To be created
-│   │       ├── application-prod.properties   # To be created
-│   │       ├── db/migration/      # Flyway migrations (to be created)
-│   │       ├── templates/         # Thymeleaf templates (to be created)
-│   │       └── static/            # CSS, JS, images (to be created)
+│   │       ├── application.properties           # Database config
+│   │       ├── application-dev.properties       # To be created
+│   │       ├── application-prod.properties      # To be created
+│   │       ├── templates/                       # Thymeleaf templates (to be created)
+│   │       └── static/                          # CSS, JS, images (to be created)
 │   └── test/
 │       └── java/
 │           └── com/example/fiszapp/
-├── build.gradle                  # Gradle build configuration
-├── settings.gradle               # Gradle settings
-├── gradlew                       # Gradle wrapper script (Unix)
-├── gradlew.bat                   # Gradle wrapper script (Windows)
-├── .gitignore                    # Git ignore rules
-├── Dockerfile                    # Docker image definition (to be created)
-└── README.md                     # Project documentation (to be created)
+├── docker-compose.yml            # PostgreSQL container definition
+├── build.gradle                  # Gradle with JPA, PostgreSQL, Lombok, Validation
+├── settings.gradle
+├── gradlew / gradlew.bat
+├── .gitignore
+├── Dockerfile                    # To be created
+└── README.md
 ```
 
 ## Coding & Data patterns

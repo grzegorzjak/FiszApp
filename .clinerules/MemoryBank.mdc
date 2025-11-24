@@ -107,3 +107,4 @@ This file should be changed only when project goals or requirements change.
 Treat the tech-stack.md as the ultimate source of truth for technical decisions and constraints.
 This file should be changed only when technical decisions or constraints change.
 If you need to change any file, please make it as simple as possible.
+Update README.md only if there are significant changes to project setup or usage instructions.

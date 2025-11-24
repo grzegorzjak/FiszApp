@@ -49,7 +49,7 @@ FiszApp addresses the time-consuming challenge of creating effective language le
 - **PostgreSQL**: Relational database hosted on mikr.us
 
 ### AI Integration
-- **OpenAI API**: Direct REST calls via Spring's RestTemplate
+- **Open Router**: Direct REST calls via Spring's RestTemplate
 
 ### DevOps
 - **Hosting**: mikr.us (free tier)
@@ -68,7 +68,7 @@ FiszApp addresses the time-consuming challenge of creating effective language le
 - **Java 21** or higher
 - **PostgreSQL** (local installation or Docker)
 - **Gradle** (or use included Gradle wrapper)
-- **OpenAI API Key** (for card generation)
+- **OpenRouter API Key** (for card generation)
 
 ### Installation Steps
 
