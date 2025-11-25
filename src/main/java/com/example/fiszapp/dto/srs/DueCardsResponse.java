@@ -1,0 +1,15 @@
+package com.example.fiszapp.dto.srs;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DueCardsResponse {
+    private List<DueCardResponse> cards;
+    private int remainingDailyLimit;
+}
