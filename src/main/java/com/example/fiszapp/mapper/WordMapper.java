@@ -11,7 +11,19 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface WordMapper {
 
-    @Mapping(target = "used", ignore = true)
+    default WordResponse toResponse(Word word, boolean used) {
+        WordResponse response = toResponse(word);
+        return new WordResponse(
+            response.getId(),
+            response.getOriginalText(),
+            response.getCanonicalText(),
+            response.getLanguage(),
+            used,
+            response.getCreatedAt()
+        );
+    }
+
+    @Mapping(target = "used", constant = "false")
     WordResponse toResponse(Word word);
 
     @Mapping(target = "id", ignore = true)
