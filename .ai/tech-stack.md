@@ -8,44 +8,6 @@ Email:     Spring Mail + SMTP (np. Gmail SMTP lub SendGrid free tier)
 Hosting:   mikr.us (darmowy tier dla start)
 CI/CD:     GitHub Actions → Docker → mikr.us
 
-#### Project Structure
-```
-FiszApp/
-├── .ai/                          # AI-related documentation
-│   ├── db-plan.md               # Database schema design
-│   ├── prd.md                   # Product Requirements Document
-│   ├── progress.md              # Development progress
-│   └── tech-stack.md            # Technical stack overview
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/example/fiszapp/
-│   │   │       ├── FiszAppApplication.java
-│   │   │       ├── controller/  # REST controllers
-│   │   │       ├── entity/      # JPA entities (User, Word, Card, CardWord, SrsState)
-│   │   │       ├── service/     # To be created
-│   │   │       ├── repository/  # To be created
-│   │   │       ├── dto/         # To be created
-│   │   │       ├── config/      # To be created
-│   │   │       └── security/    # To be created
-│   │   └── resources/
-│   │       ├── application.properties           # Database config
-│   │       ├── application-dev.properties       # To be created
-│   │       ├── application-prod.properties      # To be created
-│   │       ├── templates/                       # Thymeleaf templates (to be created)
-│   │       └── static/                          # CSS, JS, images (to be created)
-│   └── test/
-│       └── java/
-│           └── com/example/fiszapp/
-├── docker-compose.yml            # PostgreSQL container definition
-├── build.gradle                  # Gradle with JPA, PostgreSQL, Lombok, Validation
-├── settings.gradle
-├── gradlew / gradlew.bat
-├── .gitignore
-├── Dockerfile                    # To be created
-└── README.md
-```
-
 ## Coding & Data patterns
 - DTOs as `record`; constructor DI (`@RequiredArgsConstructor`); `@ControllerAdvice` for errors.
 - JPA: use projections/entity graphs; optimistic locking where contention appears.
