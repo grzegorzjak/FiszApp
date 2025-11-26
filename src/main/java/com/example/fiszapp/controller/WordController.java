@@ -38,7 +38,7 @@ public class WordController {
     @PostMapping
     public ResponseEntity<WordResponse> createWord(
         @Valid @RequestBody CreateWordRequest request,
-        @RequestAttribute("userId") UUID userId
+        @RequestHeader("userId") UUID userId
     ) {
         WordResponse response = wordService.createWord(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

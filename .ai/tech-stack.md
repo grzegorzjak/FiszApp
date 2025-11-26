@@ -14,6 +14,8 @@ CI/CD:     GitHub Actions → Docker → mikr.us
 - Transactions only at service layer; keep short.
 - User‑scoped queries by `userId` everywhere.
 - Don't create comments like. "/**" in code – use self-explanatory names and clean structure.
+- Keep code in encapsulated layers (Controller, Service, Repository) as much as possible. 
+- Use the lowest possible visibility (private/protected) for methods and fields.
 
 ### Key Design Patterns
 

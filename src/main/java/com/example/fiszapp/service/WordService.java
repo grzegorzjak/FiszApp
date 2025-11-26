@@ -78,9 +78,9 @@ public class WordService {
     public WordResponse createWord(UUID userId, CreateWordRequest request) {
         String canonicalText = canonicalize(request.originalText());
         
-//        if (wordRepository.existsByUserIdAndCanonicalText(userId, canonicalText)) {
-//            throw new WordConflictException("Word with canonical form '" + canonicalText + "' already exists");
-//        }
+        if (wordRepository.existsByUserIdAndCanonicalText(userId, canonicalText)) {
+            throw new WordConflictException("Word with canonical form '" + canonicalText + "' already exists");
+        }
         
         Word word = new Word();
         word.setUserId(userId);

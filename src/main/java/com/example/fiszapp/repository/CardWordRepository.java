@@ -13,4 +13,6 @@ public interface CardWordRepository extends JpaRepository<CardWord, UUID> {
     List<CardWord> findByUserIdAndWordId(UUID userId, UUID wordId);
 
     List<CardWord> findByCardId(UUID cardId);
+
+    void deleteByUserId(UUID userId);
 }

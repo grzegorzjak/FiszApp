@@ -57,4 +57,6 @@ public interface WordRepository extends JpaRepository<Word, UUID> {
         WHERE w.id = :wordId AND c.status = 'ACCEPTED'
         """)
     boolean isWordUsedInAcceptedCard(@Param("wordId") UUID wordId);
+
+    void deleteByUserId(UUID userId);
 }

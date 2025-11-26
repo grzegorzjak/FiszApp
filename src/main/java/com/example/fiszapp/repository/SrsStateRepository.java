@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface SrsStateRepository extends JpaRepository<SrsState, UUID> {
 
     void deleteByCardId(UUID cardId);
+
+    void deleteByUserId(UUID userId);
 }
