@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<UserResponse> getCurrentUser(
-        @RequestAttribute("userId") UUID userId
+        @RequestHeader("userId") UUID userId
     ) {
         UserResponse response = userService.getCurrentUser(userId);
         return ResponseEntity.ok(response);
@@ -28,7 +28,7 @@ public class UserController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAccount(
-        @RequestAttribute("userId") UUID userId
+        @RequestHeader("userId") UUID userId
     ) {
         userService.deleteAccount(userId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();

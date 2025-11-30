@@ -27,7 +27,7 @@ public class WordController {
         @RequestParam(required = false) String sort,
         @RequestParam(required = false) Boolean used,
         @RequestParam(required = false) String search,
-        @RequestAttribute("userId") UUID userId
+        @RequestHeader("userId") UUID userId
     ) {
         PageResponse<WordResponse> response = wordService.listWords(
             userId, page, size, sort, used, search
@@ -48,7 +48,7 @@ public class WordController {
     public ResponseEntity<WordResponse> updateWord(
         @PathVariable UUID id,
         @Valid @RequestBody UpdateWordRequest request,
-        @RequestAttribute("userId") UUID userId
+        @RequestHeader("userId") UUID userId
     ) {
         WordResponse response = wordService.updateWord(userId, id, request);
         return ResponseEntity.ok(response);
@@ -57,7 +57,7 @@ public class WordController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWord(
         @PathVariable UUID id,
-        @RequestAttribute("userId") UUID userId
+        @RequestHeader("userId") UUID userId
     ) {
         wordService.deleteWord(userId, id);
         return ResponseEntity.noContent().build();

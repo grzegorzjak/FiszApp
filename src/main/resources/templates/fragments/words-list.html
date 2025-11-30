@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Empty State -->
+    <div th:if="${words.content.isEmpty()}" class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No words yet</h3>
+        <p class="mt-1 text-sm text-gray-500">Get started by adding your first word above.</p>
+    </div>
+
+    <!-- Words Table -->
+    <div th:unless="${words.content.isEmpty()}">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Text
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Language
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr th:each="word : ${words.content}">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900" th:text="${word.originalText}"></div>
+                            <div class="text-xs text-gray-500" th:if="${word.canonicalText != word.originalText}" th:text="'(' + ${word.canonicalText} + ')'"></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800" th:text="${word.language}"></span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span th:if="${word.used}" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Used
+                            </span>
+                            <span th:unless="${word.used}" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Free
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button 
+                                type="button"
+                                th:attr="data-word-id=${word.id},data-word-text=${word.originalText},data-word-lang=${word.language}"
+                                onclick="editWord({ id: this.dataset.wordId, originalText: this.dataset.wordText, language: this.dataset.wordLang })"
+                                class="text-blue-600 hover:text-blue-900 mr-4">
+                                Edit
+                            </button>
+                            <button 
+                                type="button"
+                                th:attr="data-word-id=${word.id},data-word-text=${word.originalText},data-word-used=${word.used}"
+                                onclick="deleteWord(this.dataset.wordId, this.dataset.wordText, this.dataset.wordUsed === 'true')"
+                                class="text-red-600 hover:text-red-900">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div th:if="${words.totalPages > 1}" class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4">
+            <div class="flex-1 flex justify-between sm:hidden">
+                <button 
+                    th:if="${words.page > 0}"
+                    hx-get="/words/partial"
+                    th:attr="hx-vals='{ &quot;page&quot;: ' + ${words.page - 1} + ', &quot;size&quot;: ' + ${words.size} + ' }'"
+                    hx-target="#words-list"
+                    hx-swap="innerHTML"
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Previous
+                </button>
+                <button 
+                    th:if="${words.page < words.totalPages - 1}"
+                    hx-get="/words/partial"
+                    th:attr="hx-vals='{ &quot;page&quot;: ' + ${words.page + 1} + ', &quot;size&quot;: ' + ${words.size} + ' }'"
+                    hx-target="#words-list"
+                    hx-swap="innerHTML"
+                    class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Next
+                </button>
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Showing
+                        <span class="font-medium" th:text="${words.page * words.size + 1}"></span>
+                        to
+                        <span class="font-medium" th:text="${words.page * words.size + words.content.size()}"></span>
+                        of
+                        <span class="font-medium" th:text="${words.totalElements}"></span>
+                        results
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        <button 
+                            th:if="${words.page > 0}"
+                            hx-get="/words/partial"
+                            th:attr="hx-vals='{ &quot;page&quot;: ' + ${words.page - 1} + ', &quot;size&quot;: ' + ${words.size} + ' }'"
+                            hx-target="#words-list"
+                            hx-swap="innerHTML"
+                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button 
+                            th:if="${words.page < words.totalPages - 1}"
+                            hx-get="/words/partial"
+                            th:attr="hx-vals='{ &quot;page&quot;: ' + ${words.page + 1} + ', &quot;size&quot;: ' + ${words.size} + ' }'"
+                            hx-target="#words-list"
+                            hx-swap="innerHTML"
+                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            Next
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
