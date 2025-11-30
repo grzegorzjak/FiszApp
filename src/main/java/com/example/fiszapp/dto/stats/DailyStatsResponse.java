@@ -16,7 +16,5 @@ public class DailyStatsResponse {
     private int cardsRejected;
     private double acceptanceRate;
     private int promptsUsed;
-    private int promptsLimit;
     private int reviewsDone;
-    private int reviewsLimit;
 }

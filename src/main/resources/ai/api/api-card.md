@@ -219,7 +219,6 @@
 - **Errors**:
   - `400` – not enough free words or invalid `maxCards`
   - `401`
-  - `429 Too Many Requests` – daily prompt limit reached
   - `500`
 
 

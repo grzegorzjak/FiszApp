@@ -15,5 +15,4 @@ public class ReviewResponse {
     private Instant nextDueAt;
     private Integer intervalDays;
     private Integer repetitions;
-    private int remainingDailyLimit;
 }

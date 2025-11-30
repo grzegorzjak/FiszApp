@@ -1,6 +1,6 @@
 # Dokument wymagań produktu (PRD) - FiszApp
 ## 1. Przegląd produktu
-FiszApp to webowa aplikacja do nauki języków, która automatyzuje tworzenie wysokiej jakości fiszek w formie zdań (EN→PL) z wykorzystaniem słów dostarczanych przez użytkownika. Aplikacja łączy prosty system kont, generowanie treści przez AI, dzienny przegląd i akceptację fiszek oraz integrację z algorytmem powtórek SM‑2. MVP koncentruje się na prostocie, niskich kosztach operacyjnych i jasnych ograniczeniach (limity promptów, dzienny harmonogram, brak zaawansowanych integracji).
+FiszApp to webowa aplikacja do nauki języków, która automatyzuje tworzenie wysokiej jakości fiszek w formie zdań (EN→PL) z wykorzystaniem słów dostarczanych przez użytkownika. Aplikacja łączy prosty system kont, generowanie treści przez AI, dzienny przegląd i akceptację fiszek oraz integrację z algorytmem powtórek SM‑2. MVP koncentruje się na prostocie, niskich kosztach operacyjnych i jasnych ograniczeniach (dzienny harmonogram, brak zaawansowanych integracji).
 
 Cele produktu:
 - Zredukować czas i barierę tworzenia fiszek o wysokiej jakości (zdania zamiast pojedynczych słów).
@@ -11,7 +11,7 @@ Założenia kluczowe:
 - Fiszki zawsze w formacie EN (front) = PL (back), treść zdania 4 – 8 słów, poziom ~B1/B2, neutralne, bez rzadkich idiomów.
 - Każda fiszka musi wykorzystywać co najmniej 2 „słowa” (słowo/fraza/fragment) dodane przez użytkownika.
 - Jedno „słowo” może trafić tylko do jednej fiszki (per użytkownik).
-- Dzienna generacja o 06:00 czasu lokalnego użytkownika + on‑demand w ramach limitów.
+- Dzienna generacja o 06:00 czasu lokalnego użytkownika + on‑demand.
 - Prosty system użytkowników i prosta integracja z gotowym SM‑2 (Again/Hard/Good/Easy).
 
 ## 2. Problem użytkownika
@@ -54,11 +54,9 @@ Jak FiszApp rozwiązuje problem:
   - przechowywanie listy „słów” wykorzystanych w fiszce (transparentność).
 - Harmonogram:
   - automatycznie codziennie o 06:00 czasu lokalnego użytkownika,
-  - na żądanie (on‑demand), o ile dostępny jest limit promptów.
+  - na żądanie (on‑demand)
 - Limity kosztowe/operacyjne:
-  - 2 prompty AI/dzień,
   - 1 prompt generuje do 10 nowych fiszek,
-  - po wyczerpaniu limitu – twardy stop do następnego dnia.
 - Stany fiszki: draft (do akceptacji) → accepted (w SRS) → archived/invalidated (po zmianie/usunięciu „słów”).
 - Edycja draftu przez użytkownika: dozwolona pod warunkiem zachowania wykorzystanych „słów”.
 
@@ -77,14 +75,12 @@ Jak FiszApp rozwiązuje problem:
 
 3.6 Powtórki SM‑2
 - Integracja z gotowym SM‑2, interfejs ocen: Again/Hard/Good/Easy.
-- Dzienny limit powtórek: 30 kart; kolejność „najbardziej zaległe najpierw”.
 - Liczniki i harmonogram SM‑2 utrzymywane w bazie.
 - Przejrzyste stany: „due today”, „upcoming”, „snooze na jutro” (1×/karta).
 
 3.7 Statystyki i limity
 - acceptance_rate = zaakceptowane / wygenerowane, liczony raz dziennie (np. nocą).
-- Widok dziennych metryk: wygenerowane, zaakceptowane, odrzucone, wykorzystanie promptów.
-- Komunikaty o limitach (np. „limit promptów na dziś wyczerpany”).
+- Widok dziennych metryk: wygenerowane, zaakceptowane, odrzucone
 
 3.8 Moderacja i jakość
 - Weryfikacje jakości: długość zdania, brak rzadkich idiomów.
@@ -95,11 +91,11 @@ Jak FiszApp rozwiązuje problem:
 3.10 UX i dostępność
 - Płynny przepływ: Dodaj „słowa” → Paczka → Akceptacja → SM‑2 → Powtórki.
 - Czytelne oznaczanie „słów” użytych w fiszce.
-- Stany pustej listy (empty states) i jasne komunikaty błędów/limitów.
+- Stany pustej listy (empty states) i jasne komunikaty błędów.
 - Przystosowanie do desktop (MVP web), responsywność podstawowa.
 
 ## 4. Granice produktu
-- W zakresie: web‑aplikacja (desktop‑first), rejestracja/logowanie, CRUD „słów” i fiszek, generacja AI w paczkach, akceptacja/edycja/odrzucenie, integracja SM‑2, dzienne limity i harmonogram, proste statystyki, RODO delete, podstawowa moderacja.
+- W zakresie: web‑aplikacja (desktop‑first), rejestracja/logowanie, CRUD „słów” i fiszek, generacja AI w paczkach, akceptacja/edycja/odrzucenie, integracja SM‑2, harmonogram, proste statystyki, RODO delete, podstawowa moderacja.
 - Poza zakresem (MVP): własny zaawansowany algorytm SRS, import/eksport wielu formatów (PDF, DOCX), współdzielenie zestawów, integracje z zewnętrznymi platformami, aplikacje mobilne.
 - Ograniczenia operacyjne: 2 prompty/dzień, 1 prompt ≤10 fiszek, powtórki ≤30/dzień, generacja o 06:00 lokalnie + on‑demand.
 - Techniczne uproszczenia: brak real‑time współpracy, brak tagowania/kategoryzacji, brak wersjonowania fiszek poza statusem.
@@ -165,7 +161,7 @@ Tytuł: Generacja on‑demand
 Opis: Jako użytkownik chcę ręcznie wywołać generację paczki.
 Kryteria akceptacji:
 - Gdy nie wyczerpano dziennych limitów promptów, mogę wygenerować paczkę.
-- Komunikat zliczający: ile fiszek powstało, ile limitów pozostało.
+- Komunikat zliczający: ile fiszek powstało.
 - Po limicie otrzymuję jasny komunikat o braku dostępnych promptów.
 
 US‑009
@@ -199,12 +195,11 @@ Kryteria akceptacji:
 - Fiszka oznaczona archived/invalidated; gotowa do regeneracji w kolejnej paczce.
 
 US‑013
-Tytuł: Powtórki SM‑2 z limitem 30/dzień
+Tytuł: Powtórki SM‑2
 Opis: Jako użytkownik chcę codziennych powtórek do 30 fiszek.
 Kryteria akceptacji:
 - Lista „due” sortowana: najbardziej zaległe najpierw.
 - Oceny Again/Hard/Good/Easy modyfikują stan SM‑2.
-- Po osiągnięciu limitu wyświetlany jest komunikat oraz opcja „snooze na jutro” (1×/karta).
 
 US‑014
 Tytuł: Statystyki akceptacji
@@ -224,11 +219,10 @@ Kryteria akceptacji:
 
 US‑016
 Tytuł: Puste stany i komunikaty
-Opis: Jako użytkownik chcę czytelnych komunikatów, gdy nie ma fiszek/słów lub limity są wyczerpane.
+Opis: Jako użytkownik chcę czytelnych komunikatów, gdy nie ma fiszek/słów.
 Kryteria akceptacji:
 - Empty state dla list „słów”, paczek, powtórek.
 - Czytelne CTA: „Dodaj słowa”, „Wygeneruj paczkę”, „Wróć jutro”.
-- Komunikaty o limitach promptów/powtórek.
 
 US‑017
 Tytuł: Usunięcie konta (RODO)
@@ -289,7 +283,6 @@ Tytuł: Bezpieczne API publiczne
 Opis: Jako integrator chcę, by backend miał proste, zabezpieczone endpointy.
 Kryteria akceptacji:
 - API REST z autoryzacją JWT.
-- Limitowanie zapytań per userId/IP.
 - Dokumentacja OpenAPI dla MVP.
 
 ## 6. Metryki sukcesu
@@ -298,8 +291,3 @@ Kryteria akceptacji:
   - udział AI‑generacji ≥ 75% wszystkich nowych fiszek.
 - Operacyjne KPI:
   - dzienna liczba wygenerowanych/zaakceptowanych/odrzuconych fiszek,
-  - wykorzystanie limitów promptów (ile dostępnych vs użyte),
-  - średni czas od generacji do akceptacji,
-  - liczba fiszek „invalidated” przez zmiany „słów”,
-  - czas i liczba zakończonych dziennych powtórek (limit 30).
-

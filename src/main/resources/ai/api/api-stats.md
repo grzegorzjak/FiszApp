@@ -35,9 +35,7 @@
   "cardsRejected": 2,
   "acceptanceRate": 0.8,
   "promptsUsed": 1,
-  "promptsLimit": 2,
-  "reviewsDone": 25,
-  "reviewsLimit": 30
+  "reviewsDone": 25
 }
 ```
 

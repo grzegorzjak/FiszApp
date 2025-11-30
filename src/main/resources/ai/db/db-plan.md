@@ -71,7 +71,7 @@ i tym samym „oddać” słowa do puli „wolnych”.
 - **UNIQUE** (`user_id`, `card_id`) — jedna szufladka SRS na kartę
 - **FK** (`user_id`, `card_id`) → `cards(user_id, id)` **ON DELETE CASCADE** **DEFERRABLE INITIALLY IMMEDIATE**
 
-Uwagi: granice i reguły SM-2, w tym limit 30/dzień i „most overdue first”, są logiką aplikacyjną; schema utrzymuje 
+Uwagi: granice i reguły SM-2 i „most overdue first”, są logiką aplikacyjną; schema utrzymuje 
 jedynie aktualny stan i termin. 
 
 ---

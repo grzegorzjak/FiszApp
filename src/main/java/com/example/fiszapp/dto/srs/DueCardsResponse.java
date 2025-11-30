@@ -11,5 +11,4 @@ import java.util.List;
 @AllArgsConstructor
 public class DueCardsResponse {
     private List<DueCardResponse> cards;
-    private int remainingDailyLimit;
 }

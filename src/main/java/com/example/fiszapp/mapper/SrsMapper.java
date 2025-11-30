@@ -23,6 +23,5 @@ public interface SrsMapper {
     @Mapping(source = "dueAt", target = "nextDueAt")
     @Mapping(source = "intervalDays", target = "intervalDays")
     @Mapping(source = "repetitions", target = "repetitions")
-    @Mapping(target = "remainingDailyLimit", ignore = true)
     ReviewResponse toReviewResponse(SrsState srsState);
 }

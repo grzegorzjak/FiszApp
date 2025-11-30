@@ -37,11 +37,7 @@
 
 - **Method**: `GET`  
 - **Path**: `/api/srs/reviews`  
-- **Description**: Cards due today, sorted by `dueAt`, limited to at most 30 per day.
-
-**Query params**
-
-- `limit` (int, optional, default `30`, max `30`)
+- **Description**: Cards due today, sorted by `dueAt`.
 
 **Response JSON (shape)**
 
@@ -57,8 +53,7 @@
       "repetitions": 2,
       "lastGrade": 3
     }
-  ],
-  "remainingDailyLimit": 18
+  ]
 }
 ```
 
@@ -88,8 +83,7 @@
   "cardId": "card-uuid",
   "nextDueAt": "...",
   "intervalDays": 4,
-  "repetitions": 3,
-  "remainingDailyLimit": 17
+  "repetitions": 3
 }
 ```
 
@@ -97,7 +91,6 @@
 - **Errors**:
   - `400` – invalid grade or card not in reviewable state
   - `404` – card not found for user
-  - `429` – daily review limit reached
 
 ---
 
@@ -117,7 +110,6 @@
 ### SRS reviews
 
 - `GET /srs/reviews`:
-  - Return due cards (`dueAt <= today`) sorted by `dueAt`, up to daily limit (30).
+  - Return due cards (`dueAt <= today`) sorted by `dueAt`.
 - `POST /srs/reviews`:
   - Validate grade; update `easiness`, `intervalDays`, `repetitions`, `dueAt`.
-  - Increment daily review counter; if limit exceeded before update → `429`.
