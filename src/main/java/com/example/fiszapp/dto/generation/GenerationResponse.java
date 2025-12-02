@@ -16,6 +16,5 @@ public class GenerationResponse {
     private Instant createdAt;
     private int requestedCards;
     private int createdCards;
-    private int remainingPromptQuota;
     private List<GeneratedCardSummary> cards;
 }

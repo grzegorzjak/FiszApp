@@ -183,7 +183,7 @@
 - **Method**: `POST`  
 - **Path**: `/api/generation-batches`  
 - **Description**: Use free words to generate up to 10 new draft cards via AI.  
-  Enforces: ≥2 free words, max 2 prompts/day, max 10 cards per prompt.
+  Enforces: ≥2 free words, max 10 cards per prompt.
 
 **Request JSON**
 
@@ -256,7 +256,6 @@
 ### On-demand card generation (`/generation-batches`)
 
 - Check number of free words (no `card_words` entry). If `< 2` → `400` (`NOT_ENOUGH_FREE_WORDS`).
-- Check daily prompt count for user. If ≥ 2 → `429`.
 - Build groups of free words (≥2 per candidate card) and call AI client.
 - Validate each returned pair (sentence rules) and discard invalid ones.
 - Create `cards` with `status = draft` and related `card_words`.

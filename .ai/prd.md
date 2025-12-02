@@ -97,7 +97,7 @@ Jak FiszApp rozwiązuje problem:
 ## 4. Granice produktu
 - W zakresie: web‑aplikacja (desktop‑first), rejestracja/logowanie, CRUD „słów” i fiszek, generacja AI w paczkach, akceptacja/edycja/odrzucenie, integracja SM‑2, harmonogram, proste statystyki, RODO delete, podstawowa moderacja.
 - Poza zakresem (MVP): własny zaawansowany algorytm SRS, import/eksport wielu formatów (PDF, DOCX), współdzielenie zestawów, integracje z zewnętrznymi platformami, aplikacje mobilne.
-- Ograniczenia operacyjne: 2 prompty/dzień, 1 prompt ≤10 fiszek, powtórki ≤30/dzień, generacja o 06:00 lokalnie + on‑demand.
+- Ograniczenia operacyjne: 1 prompt ≤10 fiszek, powtórki ≤30/dzień, generacja o 06:00 lokalnie + on‑demand.
 - Techniczne uproszczenia: brak real‑time współpracy, brak tagowania/kategoryzacji, brak wersjonowania fiszek poza statusem.
 
 ## 5. Historyjki użytkowników

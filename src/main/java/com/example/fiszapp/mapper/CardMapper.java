@@ -3,27 +3,49 @@ package com.example.fiszapp.mapper;
 import com.example.fiszapp.dto.card.CardDetailResponse;
 import com.example.fiszapp.dto.card.CardResponse;
 import com.example.fiszapp.dto.card.WordSummary;
-import com.example.fiszapp.dto.generation.GeneratedCardSummary;
+import com.example.fiszapp.dto.enums.CardStatus;
+import com.example.fiszapp.dto.enums.Language;
 import com.example.fiszapp.entity.Card;
 import com.example.fiszapp.entity.Word;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
-@Mapper(componentModel = "spring")
-public interface CardMapper {
+@Component
+public class CardMapper {
 
-    @Mapping(target = "usedWordIds", ignore = true)
-    CardResponse toResponse(Card card);
+    public CardResponse toCardResponse(Card card, List<UUID> usedWordIds) {
+        return new CardResponse(
+            card.getId(),
+            CardStatus.valueOf(card.getStatus().toUpperCase()),
+            card.getFrontEn(),
+            card.getBackPl(),
+            usedWordIds,
+            card.getCreatedAt(),
+            card.getAcceptedAt(),
+            card.getArchivedAt()
+        );
+    }
 
-    @Mapping(target = "usedWords", ignore = true)
-    CardDetailResponse toDetailResponse(Card card);
+    public CardDetailResponse toCardDetailResponse(Card card, List<Word> usedWords) {
+        List<WordSummary> wordSummaries = usedWords.stream()
+            .map(word -> new WordSummary(
+                word.getId(),
+                word.getOriginalText(),
+                Language.valueOf(word.getLanguage().toUpperCase())
+            ))
+            .toList();
 
-    @Mapping(target = "usedWordIds", ignore = true)
-    GeneratedCardSummary toGeneratedCardSummary(Card card);
-
-    WordSummary toWordSummary(Word word);
-
-    List<WordSummary> toWordSummaryList(List<Word> words);
+        return new CardDetailResponse(
+            card.getId(),
+            CardStatus.valueOf(card.getStatus().toUpperCase()),
+            card.getFrontEn(),
+            card.getBackPl(),
+            wordSummaries,
+            card.getCreatedAt(),
+            card.getAcceptedAt(),
+            card.getArchivedAt()
+        );
+    }
 }
