@@ -17,7 +17,6 @@ FiszApp addresses the time-consuming challenge of creating effective language le
 
 - **AI-Powered Card Generation**: Automatically creates English sentences (4-8 words, ~B1/B2 level) with Polish translations based on user-provided vocabulary
 - **Smart Word Management**: Track which words have been used, with each word appearing in exactly one flashcard per user
-- **Daily Review System**: Scheduled card generation at 06:00 local time with on-demand generation option
 - **SM-2 Spaced Repetition**: Integrated learning algorithm
 - **Quality Control**: User review and acceptance workflow with edit/reject capabilities
 - **Transparent Word Tracking**: See which words are used in each card, with automatic card invalidation when words are modified

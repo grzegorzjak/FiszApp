@@ -160,22 +160,6 @@
   - `404` – not found or not draft
   - `409` – concurrent modification
 
-
-### [C4] Archive accepted card (optional)
-
-- **Method**: `POST`  
-- **Path**: `/api/cards/{id}/archive`  
-- **Description**: Manually archive an accepted card (stop reviewing it).
-
-**Request body**: none  
-
-**Response**: card DTO or empty body  
-
-- **Success**: `200 OK`  
-- **Errors**: `400`, `404`
-
----
-
 ## Card generation endpoints
 
 ### [G1] Trigger on-demand generation
@@ -220,19 +204,6 @@
   - `400` – not enough free words or invalid `maxCards`
   - `401`
   - `500`
-
-
-### [G2] List past generation batches (optional)
-
-- **Method**: `GET`  
-- **Path**: `/api/generation-batches`  
-- **Description**: Basic history for debugging and stats.
-
-**Query params**: `page`, `size`  
-
-**Response**: paged list of batches with `createdCards`, `requestedCards`.
-
----
 
 ## Validation
 

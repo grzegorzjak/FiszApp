@@ -11,7 +11,6 @@ Założenia kluczowe:
 - Fiszki zawsze w formacie EN (front) = PL (back), treść zdania 4 – 8 słów, poziom ~B1/B2, neutralne, bez rzadkich idiomów.
 - Każda fiszka musi wykorzystywać co najmniej 2 „słowa” (słowo/fraza/fragment) dodane przez użytkownika.
 - Jedno „słowo” może trafić tylko do jednej fiszki (per użytkownik).
-- Dzienna generacja o 06:00 czasu lokalnego użytkownika + on‑demand.
 - Prosty system użytkowników i prosta integracja z gotowym SM‑2 (Again/Hard/Good/Easy).
 
 ## 2. Problem użytkownika
@@ -53,7 +52,6 @@ Jak FiszApp rozwiązuje problem:
   - treść angielska na froncie, polska na rewersie,
   - przechowywanie listy „słów” wykorzystanych w fiszce (transparentność).
 - Harmonogram:
-  - automatycznie codziennie o 06:00 czasu lokalnego użytkownika,
   - na żądanie (on‑demand)
 - Limity kosztowe/operacyjne:
   - 1 prompt generuje do 10 nowych fiszek,
@@ -97,7 +95,7 @@ Jak FiszApp rozwiązuje problem:
 ## 4. Granice produktu
 - W zakresie: web‑aplikacja (desktop‑first), rejestracja/logowanie, CRUD „słów” i fiszek, generacja AI w paczkach, akceptacja/edycja/odrzucenie, integracja SM‑2, harmonogram, proste statystyki, RODO delete, podstawowa moderacja.
 - Poza zakresem (MVP): własny zaawansowany algorytm SRS, import/eksport wielu formatów (PDF, DOCX), współdzielenie zestawów, integracje z zewnętrznymi platformami, aplikacje mobilne.
-- Ograniczenia operacyjne: 1 prompt ≤10 fiszek, powtórki ≤30/dzień, generacja o 06:00 lokalnie + on‑demand.
+- Ograniczenia operacyjne: 1 prompt ≤10 fiszek, powtórki ≤30/dzień, generacja on‑demand.
 - Techniczne uproszczenia: brak real‑time współpracy, brak tagowania/kategoryzacji, brak wersjonowania fiszek poza statusem.
 
 ## 5. Historyjki użytkowników
@@ -147,14 +145,6 @@ Opis: Jako użytkownik chcę wiedzieć, czy „słowo” zostało użyte w fiszc
 Kryteria akceptacji:
 - Kolumna/znacznik „wolne”/„zużyte”.
 - Link do fiszki, jeśli zużyte.
-
-US‑007
-Tytuł: Generacja paczki o 06:00
-Opis: Jako użytkownik chcę, aby codziennie o 06:00 lokalnie generowała się paczka draftów.
-Kryteria akceptacji:
-- Jeśli są dostępne prompty, system tworzy do 10 fiszek.
-- Każda fiszka spełnia reguły (≥2 „słowa”, 4–8 EN, tłumaczenie PL, brak idiomów).
-- Po wygenerowaniu „słowa” użyte w fiszkach oznaczone jako „zużyte”.
 
 US‑008
 Tytuł: Generacja on‑demand
@@ -257,12 +247,6 @@ Tytuł: Wybór najpopularniejszego znaczenia
 Opis: Jako użytkownik chcę naturalnych tłumaczeń.
 Kryteria akceptacji:
 - Słowa wieloznaczne tłumaczone według najpopularniejszego znaczenia.
-
-US‑022
-Tytuł: Lokalny harmonogram 06:00
-Opis: Jako użytkownik chcę, aby generacja uwzględniała moją strefę czasową.
-Kryteria akceptacji:
-- Generacja następuje o 06:00 w strefie użytkownika.
 
 US‑023
 Tytuł: Obsługa niewystarczającej puli „słów”
