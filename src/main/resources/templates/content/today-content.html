@@ -1,0 +1,138 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <!-- Header -->
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Today</h1>
+        <p class="text-gray-600 mt-2">Your daily plan and quick actions</p>
+    </header>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Drafts to Review -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Drafts to Review</h3>
+                <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <div id="drafts-count" 
+                 hx-get="/api/cards?status=DRAFT&page=0&size=1" 
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
+                <div class="animate-pulse">
+                    <div class="h-10 bg-gray-200 rounded w-20 mb-2"></div>
+                    <div class="h-4 bg-gray-200 rounded w-32"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Reviews -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Today's Reviews</h3>
+                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+            </div>
+            <div id="reviews-count" 
+                 hx-get="/api/srs/due" 
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
+                <div class="animate-pulse">
+                    <div class="h-10 bg-gray-200 rounded w-20 mb-2"></div>
+                    <div class="h-4 bg-gray-200 rounded w-32"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generation Status -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Generation Status</h3>
+                <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <div class="text-3xl font-bold text-gray-900 mb-2">5/10</div>
+            <p class="text-sm text-gray-600">Prompts used today</p>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Work on Drafts -->
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+            <h3 class="text-xl font-semibold mb-3">Work on Drafts</h3>
+            <p class="mb-4 opacity-90">Review and accept generated flashcards</p>
+            <a href="/cards?tab=drafts" 
+               class="inline-block bg-white text-blue-600 px-6 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors">
+                Go to Drafts
+            </a>
+        </div>
+
+        <!-- Start Reviews -->
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
+            <h3 class="text-xl font-semibold mb-3">Start Today's Reviews</h3>
+            <p class="mb-4 opacity-90">Practice your flashcards using spaced repetition</p>
+            <a href="/reviews" 
+               class="inline-block bg-white text-green-600 px-6 py-2 rounded-md font-medium hover:bg-green-50 transition-colors">
+                Start Reviews
+            </a>
+        </div>
+    </div>
+
+    <!-- Empty State Hints -->
+    <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h4 class="font-semibold text-gray-900 mb-2">Getting Started</h4>
+        <ul class="space-y-2 text-sm text-gray-700">
+            <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span><strong>Step 1:</strong> Add words or phrases in the <a href="/words" class="text-blue-600 hover:underline">Words</a> section</span>
+            </li>
+            <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span><strong>Step 2:</strong> Generate flashcards from your words in <a href="/cards?tab=drafts" class="text-blue-600 hover:underline">Cards</a></span>
+            </li>
+            <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span><strong>Step 3:</strong> Review and accept your flashcards</span>
+            </li>
+            <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span><strong>Step 4:</strong> Practice daily in <a href="/reviews" class="text-blue-600 hover:underline">Reviews</a> using spaced repetition</span>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Handle drafts count response
+        htmx.on('#drafts-count', 'htmx:afterSwap', function(event) {
+            const response = JSON.parse(event.detail.xhr.response);
+            const count = response.totalElements || 0;
+            const countText = count === 0 ? 'No drafts' : count === 1 ? '1 draft' : `${count} drafts`;
+            event.target.innerHTML = `
+                <div class="text-3xl font-bold text-gray-900 mb-2">${count}</div>
+                <p class="text-sm text-gray-600">${countText} waiting</p>
+            `;
+        });
+
+        // Handle reviews count response
+        htmx.on('#reviews-count', 'htmx:afterSwap', function(event) {
+            const response = JSON.parse(event.detail.xhr.response);
+            const count = response.cards ? response.cards.length : 0;
+            const countText = count === 0 ? 'No reviews' : count === 1 ? '1 card' : `${count} cards`;
+            event.target.innerHTML = `
+                <div class="text-3xl font-bold text-gray-900 mb-2">${count}</div>
+                <p class="text-sm text-gray-600">${countText} due today</p>
+            `;
+        });
+    </script>
+</div>

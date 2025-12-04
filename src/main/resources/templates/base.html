@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle != null ? pageTitle + ' - FiszApp' : 'FiszApp'}">FiszApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unpkg.com/alpinejs@3.13.5/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Main Navigation -->
+                <div class="flex">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/today" class="text-2xl font-bold text-blue-600">FiszApp</a>
+                    </div>
+                    
+                    <!-- Main Navigation Links -->
+                    <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
+                        <a href="/today" 
+                           th:classappend="${activeSection == 'today' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Today
+                        </a>
+                        <a href="/words" 
+                           th:classappend="${activeSection == 'words' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Words
+                        </a>
+                        <a href="/cards" 
+                           th:classappend="${activeSection == 'cards' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Cards
+                        </a>
+                        <a href="/reviews" 
+                           th:classappend="${activeSection == 'reviews' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Reviews
+                        </a>
+                        <a href="/stats" 
+                           th:classappend="${activeSection == 'stats' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Stats
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- User Section -->
+                <div class="flex items-center">
+                    <span class="text-sm text-gray-700 mr-4">user@example.com</span>
+                    <button class="text-sm text-gray-500 hover:text-gray-700">Logout</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="sm:hidden" x-data="{ open: false }">
+            <button @click="open = !open" class="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Menu
+            </button>
+            <div x-show="open" class="border-t border-gray-200">
+                <a href="/today" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Today</a>
+                <a href="/words" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Words</a>
+                <a href="/cards" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Cards</a>
+                <a href="/reviews" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Reviews</a>
+                <a href="/stats" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Stats</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Global Alerts -->
+    <div th:if="${globalMessage}" 
+         th:class="${'mx-auto max-w-7xl px-4 mt-4 ' + (globalMessageType == 'error' ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-green-50 border border-green-200 text-green-800')}"
+         class="px-4 py-3 rounded">
+        <span th:text="${globalMessage}"></span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div th:replace="~{${contentTemplate}}"></div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" 
+         class="fixed bottom-4 right-4 space-y-2 z-50"
+         x-data="toastManager()"
+         @show-toast.window="showToast($event.detail)">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div x-show="toast.visible"
+                 x-transition
+                 :class="toast.type === 'error' ? 'bg-red-50 border-red-200 text-red-800' : 'bg-green-50 border-green-200 text-green-800'"
+                 class="border px-4 py-3 rounded shadow-lg max-w-sm">
+                <span x-text="toast.message"></span>
+            </div>
+        </template>
+    </div>
+
+    <script>
+        function toastManager() {
+            return {
+                toasts: [],
+                nextId: 1,
+                
+                showToast(detail) {
+                    const id = this.nextId++;
+                    const toast = {
+                        id: id,
+                        message: detail.message,
+                        type: detail.type || 'success',
+                        visible: true
+                    };
+                    
+                    this.toasts.push(toast);
+                    
+                    setTimeout(() => {
+                        const index = this.toasts.findIndex(t => t.id === id);
+                        if (index > -1) {
+                            this.toasts[index].visible = false;
+                            setTimeout(() => {
+                                this.toasts = this.toasts.filter(t => t.id !== id);
+                            }, 300);
+                        }
+                    }, 3000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
