@@ -53,7 +53,7 @@ public class OpenRouterClient {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
+        headers.setBearerAuth(System.getenv("OPENROUTER_API_KEY") != null ? System.getenv("OPENROUTER_API_KEY") : apiKey);
         headers.set("HTTP-Referer", "https://fiszapp.com");
         headers.set("X-Title", "FiszApp");
 
@@ -91,7 +91,7 @@ public class OpenRouterClient {
             RULES:
             1. Generate up to %d flashcards
             2. Each flashcard must:
-               - Use AT LEAST 2 words from the provided list
+               - Use AT LEAST 2 words from the provided list ("WORDS TO USE"). For example, if the list = ["apple", "run"], the sentence could be "I like to run to buy an apple.", because it uses both words from the list.
                - Take every generated EN sentence and count all words from this sentence. Maximum number of words is 8, minimum is 4.
                - Use B1/B2 level English (intermediate)
                - Be neutral in content
@@ -99,6 +99,7 @@ public class OpenRouterClient {
                - Include Polish translation (back) with the most common meaning
             3. Each word from the list can only be used in ONE flashcard
             4. Generate only complete, valid flashcards
+            5. "usedWords" response field must contain ONLY words from the provided list ("WORDS TO USE"), in the EXACT form as given
             
             WORDS TO USE:
             %s
@@ -156,7 +157,7 @@ public class OpenRouterClient {
         }
 
         String[] words = card.sentenceEn().trim().split("\\s+");
-        if (words.length < 4 || words.length > 8) {
+        if (words.length < 4 || words.length > 10) {
             log.warn("Card sentence length invalid: {} words (expected 4-8)", words.length);
             return false;
         }

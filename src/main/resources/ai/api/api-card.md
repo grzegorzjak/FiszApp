@@ -187,7 +187,6 @@
   "createdAt": "...",
   "requestedCards": 10,
   "createdCards": 7,
-  "remainingPromptQuota": 1,
   "cards": [
     {
       "id": "card-id",

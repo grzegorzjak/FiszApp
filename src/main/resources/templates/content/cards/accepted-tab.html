@@ -1,0 +1,48 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <!-- Header Info -->
+    <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-start">
+            <svg class="w-6 h-6 text-green-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+                <h3 class="text-sm font-semibold text-green-900 mb-1">Accepted Cards</h3>
+                <p class="text-sm text-green-800">
+                    These cards are active in your spaced repetition system. 
+                    You can archive cards that you no longer want to review.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Count Badge -->
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-semibold text-gray-900">Active Cards</h3>
+        <div id="accepted-count-badge" 
+             class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+            Loading...
+        </div>
+    </div>
+
+    <!-- Cards List Container -->
+    <div id="accepted-list" 
+         hx-get="/cards/partial/accepted?page=0&size=20" 
+         hx-trigger="load, cardsListUpdate from:body"
+         hx-swap="innerHTML">
+        <div class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Loading accepted cards...</p>
+        </div>
+    </div>
+
+    <script>
+        htmx.on('#accepted-list', 'htmx:afterSwap', function(event) {
+            const response = JSON.parse(event.detail.xhr.response);
+            const count = response.totalElements || 0;
+            const badge = document.getElementById('accepted-count-badge');
+            if (badge) {
+                badge.textContent = `${count} card${count !== 1 ? 's' : ''}`;
+            }
+        });
+    </script>
+</div>

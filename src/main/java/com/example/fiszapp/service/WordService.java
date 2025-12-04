@@ -51,27 +51,63 @@ public class WordService {
         
         Pageable pageable = createPageable(page, size, sort);
         
-        Page<Word> wordPage;
-        if (used != null || search != null) {
-            wordPage = wordRepository.findByUserIdWithFilters(userId, used, search, pageable);
-        } else {
-            wordPage = wordRepository.findByUserId(userId, pageable);
-        }
+        // Fetch all words for the user
+        Page<Word> wordPage = wordRepository.findByUserId(userId, pageable);
         
-        List<WordResponse> content = wordPage.getContent().stream()
+        // Apply filters in Java
+        List<WordResponse> allWords = wordPage.getContent().stream()
             .map(word -> {
                 boolean isUsed = wordRepository.isWordUsedInAcceptedCard(word.getId());
                 return wordMapper.toResponse(word, isUsed);
             })
+            .filter(wordResponse -> applyFilters(wordResponse, used, search))
             .toList();
         
+        // Calculate pagination for filtered results
+        long totalElements = countFilteredWords(userId, used, search, pageable.getSort());
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        
         return new PageResponse<>(
-            content,
+            allWords,
             wordPage.getNumber(),
             wordPage.getSize(),
-            wordPage.getTotalElements(),
-            wordPage.getTotalPages()
+            totalElements,
+            totalPages
         );
+    }
+    
+    private boolean applyFilters(WordResponse wordResponse, Boolean used, String search) {
+        // Filter by used status
+        if (used != null && wordResponse.isUsed() != used) {
+            return false;
+        }
+        
+        // Filter by search term
+        if (search != null && !search.isBlank()) {
+            String searchLower = search.toLowerCase();
+            String originalTextLower = wordResponse.getOriginalText().toLowerCase();
+            String canonicalTextLower = wordResponse.getCanonicalText().toLowerCase();
+            
+            if (!originalTextLower.contains(searchLower) && !canonicalTextLower.contains(searchLower)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    private long countFilteredWords(UUID userId, Boolean used, String search, Sort sort) {
+        // Fetch all words to count filtered results
+        List<Word> allWords = wordRepository.findByUserId(userId, PageRequest.of(0, Integer.MAX_VALUE, sort))
+            .getContent();
+        
+        return allWords.stream()
+            .filter(word -> {
+                boolean isUsed = wordRepository.isWordUsedInAcceptedCard(word.getId());
+                WordResponse response = wordMapper.toResponse(word, isUsed);
+                return applyFilters(response, used, search);
+            })
+            .count();
     }
 
     @Transactional
@@ -158,6 +194,15 @@ public class WordService {
                 log.info("Archived card {} and removed from SRS due to word {} change", card.getId(), wordId);
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public long countFreeWords(UUID userId) {
+        List<Word> allWords = wordRepository.findByUserId(userId, Pageable.unpaged()).getContent();
+        
+        return allWords.stream()
+            .filter(word -> !wordRepository.isWordUsedInAcceptedCard(word.getId()))
+            .count();
     }
 
     private String canonicalize(String text) {

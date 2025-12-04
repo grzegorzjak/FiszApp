@@ -131,10 +131,10 @@ public class CardService {
     private void acceptCard(Card card) {
         List<CardWord> cardWords = cardWordRepository.findByCardId(card.getId());
         
-        if (cardWords.size() < 2) {
-            throw new CardInvalidStatusException("Card must use at least 2 words");
-        }
-        
+//        if (cardWords.size() < 2) {
+//            throw new CardInvalidStatusException("Card must use at least 2 words");
+//        }
+//
         card.setStatus("ACCEPTED");
         card.setAcceptedAt(Instant.now());
         

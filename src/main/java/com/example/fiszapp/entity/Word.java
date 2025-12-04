@@ -28,15 +28,15 @@ public class Word {
     private UUID userId;
 
     @NotBlank
-    @Column(name = "original_text", nullable = false)
+    @Column(name = "original_text", nullable = false, columnDefinition = "TEXT")
     private String originalText;
 
     @NotBlank
-    @Column(name = "canonical_text", nullable = false)
+    @Column(name = "canonical_text", nullable = false, columnDefinition = "TEXT")
     private String canonicalText;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String language;
 
     @CreationTimestamp

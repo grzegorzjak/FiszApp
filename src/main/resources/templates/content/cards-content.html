@@ -1,0 +1,61 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <!-- Header -->
+    <header class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Cards</h1>
+        <p class="text-gray-600 mt-2">Manage your flashcards from generation to review</p>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <div class="bg-white rounded-t-lg shadow-md">
+        <nav class="flex border-b border-gray-200" role="tablist">
+            <a href="/cards?tab=drafts" 
+               th:classappend="${activeTab == 'drafts' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+               class="py-4 px-6 text-sm font-medium border-b-2 focus:outline-none focus:text-blue-600"
+               role="tab"
+               th:attr="aria-selected=${activeTab == 'drafts'}">
+                Drafts & Generation
+            </a>
+            <a href="/cards?tab=accepted" 
+               th:classappend="${activeTab == 'accepted' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+               class="py-4 px-6 text-sm font-medium border-b-2 focus:outline-none focus:text-blue-600"
+               role="tab"
+               th:attr="aria-selected=${activeTab == 'accepted'}">
+                Accepted
+            </a>
+            <a href="/cards?tab=archived" 
+               th:classappend="${activeTab == 'archived' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+               class="py-4 px-6 text-sm font-medium border-b-2 focus:outline-none focus:text-blue-600"
+               role="tab"
+               th:attr="aria-selected=${activeTab == 'archived'}">
+                Archived
+            </a>
+        </nav>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="bg-white rounded-b-lg shadow-md p-6" role="tabpanel">
+        <!-- Alerts Panel -->
+        <div id="cards-alert" 
+             x-data="{ show: false, message: '', type: 'success' }"
+             @show-alert.window="show = true; message = $event.detail.message; type = $event.detail.type; setTimeout(() => show = false, 5000)">
+            <div x-show="show" 
+                 x-transition
+                 :class="type === 'error' ? 'bg-red-50 border-red-200 text-red-800' : 'bg-green-50 border-green-200 text-green-800'"
+                 class="border px-4 py-3 rounded mb-6"
+                 role="alert">
+                <span x-text="message"></span>
+            </div>
+        </div>
+
+        <!-- Dynamic Content Based on Active Tab -->
+        <div th:if="${activeTab == 'drafts'}">
+            <div th:replace="~{content/cards/drafts-tab :: content}"></div>
+        </div>
+        <div th:if="${activeTab == 'accepted'}">
+            <div th:replace="~{content/cards/accepted-tab :: content}"></div>
+        </div>
+        <div th:if="${activeTab == 'archived'}">
+            <div th:replace="~{content/cards/archived-tab :: content}"></div>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,8 +20,17 @@ public class WordViewController {
     private final WordService wordService;
 
     @GetMapping
-    public String wordsPage() {
-        return "words";
+    public String wordsPage(Model model) {
+        // TODO: Get userId from session/security context after authentication is implemented
+        UUID userId = UUID.fromString("ed848abe-5161-4558-b9ad-1a1742cffbbb");
+        
+        long freeWordsCount = wordService.countFreeWords(userId);
+        model.addAttribute("freeWordsCount", freeWordsCount);
+        model.addAttribute("pageTitle", "Words");
+        model.addAttribute("activeSection", "words");
+        model.addAttribute("contentTemplate", "content/words-content");
+        
+        return "base";
     }
 
     @GetMapping("/partial")

@@ -1,0 +1,48 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <!-- Header Info -->
+    <div class="mb-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
+        <div class="flex items-start">
+            <svg class="w-6 h-6 text-orange-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+            </svg>
+            <div>
+                <h3 class="text-sm font-semibold text-orange-900 mb-1">Archived Cards (Read-Only)</h3>
+                <p class="text-sm text-orange-800">
+                    These cards have been archived and are no longer active in your review system.
+                    This includes both rejected drafts and manually archived cards.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Count Badge -->
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-semibold text-gray-900">Archived Cards</h3>
+        <div id="archived-count-badge" 
+             class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
+            Loading...
+        </div>
+    </div>
+
+    <!-- Cards List Container -->
+    <div id="archived-list" 
+         hx-get="/cards/partial/archived?page=0&size=20" 
+         hx-trigger="load, cardsListUpdate from:body"
+         hx-swap="innerHTML">
+        <div class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Loading archived cards...</p>
+        </div>
+    </div>
+
+    <script>
+        htmx.on('#archived-list', 'htmx:afterSwap', function(event) {
+            const response = JSON.parse(event.detail.xhr.response);
+            const count = response.totalElements || 0;
+            const badge = document.getElementById('archived-count-badge');
+            if (badge) {
+                badge.textContent = `${count} card${count !== 1 ? 's' : ''}`;
+            }
+        });
+    </script>
+</div>

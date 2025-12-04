@@ -12,9 +12,39 @@
     <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Header -->
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Words</h1>
-            <p class="text-gray-600 mt-2">Tutaj zarządzasz słowami do generowania fiszek</p>
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Words</h1>
+                    <p class="text-gray-600 mt-2">Manage your words for card generation</p>
+                </div>
+                <nav class="flex gap-4">
+                    <a href="/today" class="text-gray-600 hover:text-gray-900">Today</a>
+                    <a href="/words" class="text-blue-600 font-semibold">Words</a>
+                    <a href="/cards" class="text-gray-600 hover:text-gray-900">Cards</a>
+                </nav>
+            </div>
         </header>
+
+        <!-- Free Words Panel -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-blue-900">Ready to Generate</h2>
+                    <p class="text-blue-700 mt-1">
+                        You have <span class="font-bold" th:text="${freeWordsCount}">0</span> free word(s) available
+                    </p>
+                    <p class="text-sm text-blue-600 mt-2" th:if="${freeWordsCount < 2}">
+                        Add at least 2 free words to generate cards
+                    </p>
+                </div>
+                <a 
+                    href="/cards?tab=drafts" 
+                    th:classappend="${freeWordsCount >= 2} ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'"
+                    class="px-6 py-3 text-white rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Generate Cards
+                </a>
+            </div>
+        </div>
 
         <!-- Form Section -->
         <div x-data="wordForm()" class="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -170,11 +200,10 @@
                         this.successMessage = this.editMode ? 'Changes saved' : 'Word added';
                         this.resetForm();
                         
-                        document.body.dispatchEvent(new CustomEvent('wordListUpdate'));
-                        
+                        // Reload page to update free words count
                         setTimeout(() => {
-                            this.successMessage = '';
-                        }, 3000);
+                            window.location.reload();
+                        }, 1000);
                         
                     } catch (error) {
                         this.errorMessage = 'Something went wrong. Please try again.';
@@ -227,7 +256,8 @@
                 });
 
                 if (response.ok) {
-                    document.body.dispatchEvent(new CustomEvent('wordListUpdate'));
+                    // Reload page to update free words count
+                    window.location.reload();
                 } else {
                     alert('Failed to delete word. Please try again.');
                 }

@@ -20,34 +20,6 @@ public interface WordRepository extends JpaRepository<Word, UUID> {
 
     Page<Word> findByUserId(UUID userId, Pageable pageable);
 
-    @Query("""
-        SELECT w FROM Word w
-        WHERE w.userId = :userId
-        AND (LOWER(w.originalText) LIKE LOWER(CONCAT('%', :search, '%'))
-        OR LOWER(w.canonicalText) LIKE LOWER(CONCAT('%', :search, '%')))
-        """)
-    Page<Word> findByUserIdWithSearch(
-        @Param("userId") UUID userId,
-        @Param("search") String search,
-        Pageable pageable
-    );
-
-    @Query("""
-        SELECT w FROM Word w
-        LEFT JOIN CardWord cw ON cw.word.id = w.id
-        LEFT JOIN Card c ON cw.card.id = c.id AND c.status = 'ACCEPTED'
-        WHERE w.userId = :userId
-        AND (:used IS NULL OR (CASE WHEN c.id IS NULL THEN false ELSE true END) = :used)
-        AND (:search IS NULL OR LOWER(w.originalText) LIKE LOWER(CONCAT('%', :search, '%'))
-        OR LOWER(w.canonicalText) LIKE LOWER(CONCAT('%', :search, '%')))
-        GROUP BY w.id
-        """)
-    Page<Word> findByUserIdWithFilters(
-        @Param("userId") UUID userId,
-        @Param("used") Boolean used,
-        @Param("search") String search,
-        Pageable pageable
-    );
 
     @Query("""
         SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END
