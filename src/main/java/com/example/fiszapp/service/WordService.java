@@ -7,6 +7,7 @@ import com.example.fiszapp.dto.word.WordResponse;
 import com.example.fiszapp.entity.Card;
 import com.example.fiszapp.entity.CardWord;
 import com.example.fiszapp.entity.Word;
+import com.example.fiszapp.event.WordCreatedEvent;
 import com.example.fiszapp.exception.WordConflictException;
 import com.example.fiszapp.exception.WordNotFoundException;
 import com.example.fiszapp.mapper.WordMapper;
@@ -16,6 +17,7 @@ import com.example.fiszapp.repository.SrsStateRepository;
 import com.example.fiszapp.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,7 @@ public class WordService {
     private final CardRepository cardRepository;
     private final SrsStateRepository srsStateRepository;
     private final WordMapper wordMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public PageResponse<WordResponse> listWords(
@@ -126,6 +129,15 @@ public class WordService {
         
         word = wordRepository.save(word);
         log.info("Created word {} for user {}", word.getId(), userId);
+        
+        WordCreatedEvent event = new WordCreatedEvent(
+                word.getId(),
+                word.getUserId(),
+                word.getOriginalText(),
+                word.getCanonicalText(),
+                word.getLanguage()
+        );
+        eventPublisher.publishEvent(event);
         
         return wordMapper.toResponse(word, false);
     }

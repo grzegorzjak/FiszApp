@@ -5,6 +5,7 @@ Security: Spring Security + JWT
 Database:  PostgreSQL (mikr.us managed)
 AI:        OpenRouter (bezpośrednie wywołania przez RestTemplate)
 Email:     Spring Mail + SMTP (np. Gmail SMTP lub SendGrid free tier)
+Messaging: Apache Kafka 3.9.0 (KRaft mode) + Spring Kafka
 Hosting:   mikr.us (darmowy tier dla start)
 CI/CD:     GitHub Actions → Docker → mikr.us
 
